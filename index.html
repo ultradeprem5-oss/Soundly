@@ -105,7 +105,7 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 .sv-bg{position:absolute;inset:-80px;filter:blur(70px) saturate(1.4) brightness(.8);opacity:.75;z-index:-2}
 .sv::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(10,10,12,.25) 0%,rgba(10,10,12,.55) 45%,rgba(10,10,12,.92) 100%)}
 .sv>*:not(.sv-bg){position:relative;max-width:560px;width:100%;margin-left:auto;margin-right:auto}
-.sv-top{display:grid;grid-template-columns:42px 1fr 42px;gap:10px;align-items:center}
+.sv-top{display:grid;grid-template-columns:42px 1fr 42px 42px;gap:8px;align-items:center}
 .sv-name{text-align:center;min-width:0}
 .sv-name h2{font-weight:800;font-size:1.05rem;line-height:1.2;margin:0;overflow-wrap:anywhere;letter-spacing:-.01em}
 .sv-name p{margin:2px 0 0;color:rgba(255,255,255,.7);font-weight:600;font-size:.85rem}
@@ -135,7 +135,22 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 .jumps{display:flex;justify-content:center;gap:10px;margin:0 0 12px}
 .jumps button{min-width:56px;height:34px;border-radius:999px;border:0;background:rgba(255,255,255,.1);color:#fff;font-weight:800;font-size:.85rem;font-variant-numeric:tabular-nums}
 .jumps button:active{background:rgba(255,255,255,.2)}
-.controls{display:flex;justify-content:center;align-items:center;gap:30px}
+.controls{display:flex;justify-content:space-between;align-items:center;max-width:380px;margin:0 auto}
+.ctl-spacer{width:44px;height:44px}
+.mode-wrap{position:relative}
+.mode-btn{width:44px;height:44px;color:rgba(255,255,255,.75)}
+.mode-btn svg{width:24px;height:24px}
+.mode-btn.active{color:var(--accent)}
+.mode-pop{position:absolute;right:0;bottom:calc(100% + 10px);z-index:2;min-width:250px;white-space:nowrap;background:#2A2A31;border-radius:14px;padding:6px;box-shadow:0 20px 50px -12px rgba(0,0,0,.9);transform-origin:bottom right;animation:popIn .18s ease-out}
+.mode-pop[hidden]{display:none}
+@keyframes popIn{from{opacity:0;transform:scale(.92) translateY(6px)}}
+.mode-pop button{display:flex;align-items:center;gap:12px;width:100%;border:0;background:none;color:#fff;padding:12px 12px;border-radius:10px;font-weight:700;font-size:.95rem;text-align:left}
+.mode-pop button:active{background:rgba(255,255,255,.08)}
+.mode-pop button>svg:first-child{width:20px;height:20px;flex:none;opacity:.8}
+.mode-pop button span{flex:1}
+.mode-pop .tick{width:18px;height:18px;flex:none;color:var(--accent);visibility:hidden}
+.mode-pop button[aria-checked="true"]{color:var(--accent)}
+.mode-pop button[aria-checked="true"] .tick{visibility:visible}
 .ctl{background:none;border:0;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;color:#fff}
 .ctl svg{width:30px;height:30px}
 .play{width:70px;height:70px;background:var(--gold);color:var(--accent-ink);box-shadow:0 12px 30px -10px rgba(228,185,106,.55)}
@@ -159,6 +174,55 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 .sync-time{margin-right:auto;align-self:center}
 #syncOut{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px;color:var(--ink);font:500 .85rem/1.5 ui-monospace,Menlo,monospace}
 @media (min-width:700px){.tile{flex-basis:180px;width:180px}.tile .art{width:180px;height:180px}}
+
+/* menu, drawer, panels */
+.menu-btn{margin-left:auto;border:0;background:rgba(255,255,255,.08);width:42px;height:42px;border-radius:50%;display:grid;place-items:center;color:var(--ink)}
+.menu-btn svg{width:22px;height:22px}
+.scrim{position:fixed;inset:0;z-index:6;background:rgba(0,0,0,.55);opacity:0;transition:opacity .25s}
+.scrim.in{opacity:1}
+.scrim[hidden],.drawer[hidden],.panel[hidden]{display:none}
+.drawer{position:fixed;top:0;right:0;bottom:0;z-index:7;width:min(82vw,340px);background:var(--surface);box-shadow:-20px 0 50px -20px rgba(0,0,0,.9);padding:calc(14px + env(safe-area-inset-top,0px)) 12px calc(14px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:4px;transform:translateX(105%);transition:transform .3s cubic-bezier(.22,.8,.3,1)}
+.drawer.in{transform:none}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:0 6px 10px;margin-bottom:6px;border-bottom:1px solid var(--line)}
+.drawer-title{font-weight:800;font-size:1.15rem}
+.dr-item{display:flex;align-items:center;gap:14px;width:100%;border:0;background:none;text-align:left;padding:14px 10px;border-radius:12px;color:var(--ink);font-weight:700;font-size:1rem}
+.dr-item svg{width:22px;height:22px;flex:none}
+.dr-item span:first-of-type{flex:1}
+.dr-item:not(.off):active{background:var(--surface2)}
+.dr-item.off{color:var(--muted);cursor:default}
+.dr-item.off svg{opacity:.6}
+.dr-item.premium svg{color:var(--accent);opacity:.7}
+.soon{font-size:.7rem;font-weight:800;letter-spacing:.02em;padding:3px 8px;border-radius:999px;background:var(--surface2);color:var(--muted)}
+.count{font-size:.8rem;font-weight:800;color:var(--accent)}
+.panel{position:fixed;inset:0;z-index:3;background:var(--bg);overflow-y:auto;padding:calc(12px + env(safe-area-inset-top,0px)) 16px calc(110px + env(safe-area-inset-bottom,0px))}
+.panel>*{max-width:960px;margin-left:auto;margin-right:auto}
+.panel-top{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.panel-top h2{margin:0;font-weight:800;font-size:1.5rem;letter-spacing:-.02em}
+.set-group{background:var(--surface);border-radius:14px;margin-bottom:14px;overflow:hidden}
+.set-row{display:flex;align-items:center;gap:14px;width:100%;padding:14px 16px;border:0;background:none;color:var(--ink);text-align:left;cursor:pointer}
+.set-row+.set-row{border-top:1px solid var(--line)}
+.set-row>span{flex:1;display:flex;flex-direction:column;gap:2px}
+.set-row b{font-weight:700}
+.set-row small{color:var(--muted);font-size:.82rem;font-weight:600}
+.set-row.danger b{color:#FF7A6E}
+.switch{-webkit-appearance:none;appearance:none;flex:none;width:48px;height:28px;border-radius:999px;background:var(--sunk);position:relative;cursor:pointer;transition:background .2s}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:transform .2s}
+.switch:checked{background:var(--gold)}
+.switch:checked::after{transform:translateX(20px)}
+.set-foot{color:var(--muted);font-size:.8rem;font-weight:600;text-align:center}
+.save-btn.on{color:var(--accent)}
+.save-btn.on svg{fill:currentColor}
+.empty-saved{color:var(--muted);text-align:center;padding:40px 16px;font-weight:600}
+.empty-saved strong{display:block;color:var(--ink);font-size:1.1rem;margin-bottom:6px}
+@media (prefers-reduced-motion:reduce){.drawer,.scrim{transition:none}}
+
+/* app-like touch behaviour */
+html,body{overscroll-behavior-y:none}
+body{min-height:calc(100% + 2px);-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input,textarea{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+img,.thumb,.art,.sv-cover{-webkit-user-drag:none}
+.open,.tile{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.tile{display:block}
 </style>
 </head>
 <body>
@@ -167,6 +231,7 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
   <header class="top">
     <div class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 10v4M9.5 6.5v11M14 9v6M18.5 7.5v9"/></svg></div>
     <h1 class="brand">Soundly</h1>
+    <button class="menu-btn" id="menuBtn" type="button" aria-label="Menüyü aç" aria-expanded="false" aria-controls="drawer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
   </header>
   <h2 class="greet" id="greet">Merhaba</h2>
   <h2 class="sec sec-feat">Öne Çıkanlar</h2>
@@ -188,11 +253,38 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
   <button id="miniPlay" type="button" aria-label="Duraklat"><svg viewBox="0 0 24 24" fill="currentColor" id="miniIcon"></svg></button>
   <div class="bar"><i id="miniBar"></i></div>
 </div>
+<div class="scrim" id="scrim" hidden></div>
+<nav class="drawer" id="drawer" aria-label="Menü" hidden>
+  <div class="drawer-head"><span class="drawer-title">Menü</span><button class="iconbtn" id="drawerClose" type="button" aria-label="Menüyü kapat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+  <button class="dr-item" type="button" data-go="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>Ayarlar</span></button>
+  <button class="dr-item off" type="button" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><span>Hesabım</span><span class="soon">Yakında</span></button>
+  <button class="dr-item off" type="button" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19M6.5 15h4"/></svg><span>Ödemeler ve Abonelikler</span><span class="soon">Yakında</span></button>
+  <button class="dr-item off premium" type="button" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/></svg><span>Soundly Premium</span><span class="soon">Yakında</span></button>
+  <button class="dr-item" type="button" data-go="saved"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21.2l8.8-8.8a5.5 5.5 0 0 0 0-7.8z"/></svg><span>Kaydedilenler</span><span class="count" id="savedCount"></span></button>
+</nav>
+
+<section class="panel" id="savedPanel" hidden aria-label="Kaydedilenler">
+  <div class="panel-top"><button class="iconbtn" type="button" data-close aria-label="Geri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><h2>Kaydedilenler</h2></div>
+  <ul class="list" id="savedList"></ul>
+</section>
+
+<section class="panel" id="settingsPanel" hidden aria-label="Ayarlar">
+  <div class="panel-top"><button class="iconbtn" type="button" data-close aria-label="Geri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><h2>Ayarlar</h2></div>
+  <div class="set-group">
+    <label class="set-row"><span><b>Şarkıya dokununca çal</b><small>Listeden bir şarkı açınca hemen çalmaya başlasın</small></span><input type="checkbox" class="switch" data-set="autoPlay"></label>
+  </div>
+  <div class="set-group">
+    <button class="set-row danger" type="button" id="clearSaved"><span><b>Kaydedilenleri temizle</b><small>Kaydettiğin bütün şarkılar listeden kaldırılır</small></span></button>
+  </div>
+  <p class="set-foot">Soundly 1.0</p>
+</section>
+
 <section class="sv" id="songView" hidden aria-label="Şarkı">
   <div class="sv-bg" id="svBg" aria-hidden="true"></div>
   <div class="sv-top">
     <button class="iconbtn" id="svBack" aria-label="Listeye dön"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></button>
     <div class="sv-name"><h2 id="svTitle"></h2></div>
+    <button class="iconbtn save-btn" id="svSave" type="button" aria-label="Kaydet" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21.2l8.8-8.8a5.5 5.5 0 0 0 0-7.8z"/></svg></button>
     <button class="iconbtn" id="svDl" aria-label="İndir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 21h16"/></svg></button>
   </div>
   <div class="pager" id="pager">
@@ -213,9 +305,14 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
       <button type="button" data-j="10" aria-label="10 saniye ileri">+10</button>
     </div>
     <div class="controls">
+      <span class="ctl-spacer" aria-hidden="true"></span>
       <button class="ctl" id="svPrev" aria-label="Önceki"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
       <button class="ctl play" id="svPlay" aria-label="Çal"><svg viewBox="0 0 24 24" fill="currentColor" id="svIcon"><path d="M8 5v14l11-7z"/></svg></button>
       <button class="ctl" id="svNext" aria-label="Sonraki"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+      <div class="mode-wrap">
+        <button class="ctl mode-btn" id="modeBtn" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="Çalma modu"></button>
+        <div class="mode-pop" id="modePop" role="menu" hidden><button type="button" role="menuitemradio" data-mode="seq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h11M4 12h11M4 18h7"/><path d="M17 15l3 3-3 3"/><path d="M20 18h-6"/></svg><span>Sıralı çal</span><svg class="tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></button><button type="button" role="menuitemradio" data-mode="one"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/><path d="M11.5 10.5l1.5-1v5"/></svg><span>Tekrar et</span><svg class="tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></button><button type="button" role="menuitemradio" data-mode="shuffle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg><span>Karışık çal</span><svg class="tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></button><button type="button" role="menuitemradio" data-mode="stop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/></svg><span>Şarkı bitince dur</span><svg class="tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></button></div>
+      </div>
     </div>
   </div>
   <div class="sync" id="sync" hidden>
@@ -284,7 +381,7 @@ function render(){
   const hr=new Date().getHours();
   $('greet').textContent=hr<5?'İyi geceler':hr<12?'Günaydın':hr<18?'İyi günler':'İyi akşamlar';
   const n=data.songs.length;
-  $('feat').innerHTML=hourlyPicks().map(s=>`<a class="tile${s.id===curId?' cur':''}" href="#${s.id}" data-id="${s.id}"><div class="art" style='background:${art(s)}'></div><div class="tt">${esc(s.title)}</div><div class="ss">${fmt(s.duration)}</div></a>`).join('');
+  $('feat').innerHTML=hourlyPicks().map(s=>`<div class="tile${s.id===curId?' cur':''}" role="link" tabindex="0" data-open="${s.id}" data-id="${s.id}"><div class="art" style='background:${art(s)}'></div><div class="tt">${esc(s.title)}</div><div class="ss">${fmt(s.duration)}</div></div>`).join('');
   const list=visible(); order=list.map(s=>s.id);
   const ul=$('list');
   if(!n){ul.innerHTML=`<li class="empty"><strong>Kütüphane boş</strong>Şarkılar yakında burada olacak.</li>`;paintMini();return}
@@ -292,7 +389,7 @@ function render(){
   ul.innerHTML=list.map((s,i)=>{
     const cur=s.id===curId, playing=cur&&!audio.paused;
     return `<li class="track${cur?' cur':''}" data-id="${s.id}">
-      <a class="open" href="#${s.id}" aria-label="${esc(s.title)} şarkısını aç"></a>
+      <div class="open" role="link" tabindex="0" data-open="${s.id}" aria-label="${esc(s.title)} şarkısını aç"></div>
       <div class="n">${playing?'<span class="eq"><i></i><i></i><i></i></span>':i+1}</div>
       <div class="thumb" style='background:${art(s)}'></div>
       <div class="meta"><div class="t">${esc(s.title)}</div><div class="s">${fmt(s.duration)}</div></div>
@@ -320,7 +417,7 @@ function paintMini(){
   $('miniArt').style.background=art(s);$('miniT').textContent=s.title;$('miniS').textContent=fmt(s.duration);
   $('miniIcon').innerHTML=audio.paused?PLAY:PAUSE;$('miniPlay').setAttribute('aria-label',audio.paused?'Çal':'Duraklat');
 }
-$('feat').addEventListener('click',e=>{const a=e.target.closest('a.tile');if(!a)return;const id=a.dataset.id;if(id!==curId||audio.paused)playId(id)});
+$('feat').addEventListener('click',e=>{const a=e.target.closest('.tile');if(!a)return;const id=a.dataset.id;if(settings.autoPlay&&(id!==curId||audio.paused))playId(id)});
 $('mini').addEventListener('click',e=>{
   if(e.target.closest('#miniPlay')){e.stopPropagation();if(audio.paused)audio.play().catch(()=>{});else audio.pause();return}
   if(curId)location.hash=curId;
@@ -330,9 +427,9 @@ audio.addEventListener('timeupdate',()=>{const d=audio.duration;$('miniBar').sty
 $('list').addEventListener('click',e=>{
   const btn=e.target.closest('button[data-act="dl"]');
   if(btn){e.preventDefault();const s=byId(btn.closest('.track').dataset.id);downloadSongs([s],safeName(s.title)+'.zip');return}
-  const op=e.target.closest('a.open');
-  if(op){const id=op.closest('.track').dataset.id; if(id!==curId||audio.paused) playId(id);}
-  const a=e.target.closest('a.open');
+  const op=e.target.closest('.open');
+  if(op&&settings.autoPlay){const id=op.closest('.track').dataset.id; if(id!==curId||audio.paused) playId(id);}
+  const a=e.target.closest('.open');
 });
 $('q').addEventListener('input',render);$('sort').addEventListener('change',render);
 
@@ -348,6 +445,7 @@ function openView(s){
   $('svCover').style.background=art(s);
   $('pager').scrollTop=0; paintPager();
   $('svTitle').textContent=s.title;
+  paintSave();
   buildLyrics(s);
   $('songView').hidden=false; paintMini();
   document.body.classList.add('lock');
@@ -492,12 +590,20 @@ function toggleView(){
   if(curId!==viewId){playId(viewId);return}
   if(audio.paused)audio.play().catch(()=>{}); else audio.pause();
 }
-function step(d){
+const mode=()=>settings.mode;
+const playHistory=[];
+function step(d,fromEnd){
   const base=viewId||curId; if(!order.length||!base)return;
-  let i=order.indexOf(base)+d;
-  if(i<0)i=0;
-  if(i>=order.length){audio.pause();return}
-  const id=order[i];
+  let id;
+  if(mode()==='shuffle'&&order.length>1){
+    if(d<0&&playHistory.length){id=playHistory.pop()}
+    else{do{id=order[Math.floor(Math.random()*order.length)]}while(id===base)}
+  }else{
+    let i=order.indexOf(base); if(i<0)i=0;
+    i=(i+d+order.length)%order.length; // last → first, first → last
+    id=order[i];
+  }
+  if(d>0&&base)playHistory.push(base); if(playHistory.length>50)playHistory.shift();
   playId(id);
   if(viewId) history.replaceState(null,'','#'+id), openView(byId(id));
 }
@@ -523,7 +629,12 @@ function paintView(){
 audio.addEventListener('play',()=>{paintView();render();media()});
 audio.addEventListener('pause',()=>{paintView();render()});
 audio.addEventListener('loadedmetadata',paintView);
-audio.addEventListener('ended',()=>step(1));
+audio.addEventListener('ended',()=>{
+  const m=mode();
+  if(m==='one'){audio.currentTime=0;audio.play().catch(()=>{});return}
+  if(m==='stop'){audio.currentTime=0;paintView();return}
+  step(1,true);
+});
 audio.addEventListener('timeupdate',()=>{paintView();updateLyrics()});
 let seeking=false;
 $('seek').addEventListener('input',e=>{seeking=true;const p=e.target.value/1000;e.target.style.setProperty('--p',p*100+'%');const s=byId(viewId);$('cur').textContent=fmt(p*((viewId===curId&&audio.duration)||s.duration))});
@@ -591,6 +702,98 @@ async function downloadSongs(songs){
   toast('İndirme başladı');
 }
 
+/* ---------- settings, saved songs, menu ---------- */
+const store={get(k,d){try{const v=localStorage.getItem('soundly:'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('soundly:'+k,JSON.stringify(v))}catch(e){}}};
+const settings=Object.assign({autoPlay:true,mode:'seq'},store.get('settings',{}));
+if(!['seq','one','shuffle','stop'].includes(settings.mode))settings.mode='seq';
+const MODE_ICONS={"seq": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 6h11M4 12h11M4 18h7\"/><path d=\"M17 15l3 3-3 3\"/><path d=\"M20 18h-6\"/></svg>", "one": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M17 2l4 4-4 4\"/><path d=\"M3 11V9a3 3 0 0 1 3-3h15\"/><path d=\"M7 22l-4-4 4-4\"/><path d=\"M21 13v2a3 3 0 0 1-3 3H3\"/><path d=\"M11.5 10.5l1.5-1v5\"/></svg>", "shuffle": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M16 3h5v5\"/><path d=\"M4 20L21 3\"/><path d=\"M21 16v5h-5\"/><path d=\"M15 15l6 6\"/><path d=\"M4 4l5 5\"/></svg>", "stop": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"6\" y=\"6\" width=\"12\" height=\"12\" rx=\"2\"/></svg>"};
+const MODE_LABELS={seq:'Sıralı çal',one:'Tekrar et',shuffle:'Karışık çal',stop:'Şarkı bitince dur'};
+function paintMode(){
+  $('modeBtn').innerHTML=MODE_ICONS[settings.mode];
+  $('modeBtn').classList.toggle('active',settings.mode!=='seq');
+  $('modeBtn').setAttribute('aria-label','Çalma modu: '+MODE_LABELS[settings.mode]);
+  document.querySelectorAll('#modePop [data-mode]').forEach(b=>b.setAttribute('aria-checked',b.dataset.mode===settings.mode));
+}
+function closeModePop(){$('modePop').hidden=true;$('modeBtn').setAttribute('aria-expanded','false')}
+$('modeBtn').onclick=e=>{e.stopPropagation();const open=$('modePop').hidden;$('modePop').hidden=!open;$('modeBtn').setAttribute('aria-expanded',open)};
+$('modePop').addEventListener('click',e=>{
+  const b=e.target.closest('[data-mode]');if(!b)return;
+  settings.mode=b.dataset.mode;store.set('settings',settings);paintMode();closeModePop();
+  toast(MODE_LABELS[settings.mode],1400);
+});
+document.addEventListener('click',e=>{if(!$('modePop').hidden&&!e.target.closest('.mode-wrap'))closeModePop()});
+paintMode();
+let saved=store.get('saved',[]);
+function isSaved(id){return saved.includes(id)}
+function toggleSave(id){
+  saved=isSaved(id)?saved.filter(x=>x!==id):[id,...saved];
+  store.set('saved',saved); paintSave(); paintSavedCount();
+  toast(isSaved(id)?'Kaydedilenlere eklendi':'Kaydedilenlerden çıkarıldı',1600);
+  if(!$('savedPanel').hidden)renderSaved();
+}
+function paintSave(){
+  const on=viewId&&isSaved(viewId);
+  $('svSave').classList.toggle('on',!!on);$('svSave').setAttribute('aria-pressed',!!on);
+  $('svSave').setAttribute('aria-label',on?'Kaydedilenlerden çıkar':'Kaydet');
+}
+function paintSavedCount(){const n=saved.filter(id=>byId(id)).length;$('savedCount').textContent=n?n:''}
+$('svSave').onclick=()=>{if(viewId)toggleSave(viewId)};
+function renderSaved(){
+  const list=saved.map(byId).filter(Boolean);
+  const ul=$('savedList');
+  if(!list.length){ul.innerHTML='<li class="empty-saved"><strong>Henüz kaydettiğin şarkı yok</strong>Bir şarkının sayfasındaki kalp tuşuyla kaydedebilirsin.</li>';return}
+  ul.innerHTML=list.map((s,i)=>`<li class="track${s.id===curId?' cur':''}" data-id="${s.id}">
+      <div class="open" role="link" tabindex="0" data-open="${s.id}" aria-label="${esc(s.title)} şarkısını aç"></div>
+      <div class="n">${i+1}</div>
+      <div class="thumb" style='background:${art(s)}'></div>
+      <div class="meta"><div class="t">${esc(s.title)}</div><div class="s">${fmt(s.duration)}</div></div>
+      <div class="acts"><button data-act="dl" aria-label="${esc(s.title)} indir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9.5"/><path d="M12 7.5v8m0 0-3.5-3.5m3.5 3.5 3.5-3.5"/></svg></button></div>
+    </li>`).join('');
+}
+$('savedList').addEventListener('click',e=>{
+  const btn=e.target.closest('button[data-act="dl"]');
+  if(btn){e.preventDefault();downloadSongs([byId(btn.closest('.track').dataset.id)]);return}
+  const op=e.target.closest('.open');
+  if(op&&settings.autoPlay){const id=op.closest('.track').dataset.id;if(id!==curId||audio.paused)playId(id)}
+});
+function openDrawer(){
+  $('scrim').hidden=false;$('drawer').hidden=false;$('menuBtn').setAttribute('aria-expanded','true');
+  requestAnimationFrame(()=>{$('scrim').classList.add('in');$('drawer').classList.add('in')});
+}
+function closeDrawer(){
+  $('scrim').classList.remove('in');$('drawer').classList.remove('in');$('menuBtn').setAttribute('aria-expanded','false');
+  setTimeout(()=>{$('scrim').hidden=true;$('drawer').hidden=true},reduce?0:300);
+}
+$('menuBtn').onclick=openDrawer;$('drawerClose').onclick=closeDrawer;$('scrim').onclick=closeDrawer;
+$('drawer').addEventListener('click',e=>{
+  const it=e.target.closest('.dr-item');if(!it)return;
+  if(it.classList.contains('off')){toast('Bu bölüm yakında açılacak',1800);return}
+  closeDrawer();
+  if(it.dataset.go==='saved'){renderSaved();$('savedPanel').hidden=false}
+  if(it.dataset.go==='settings'){$('settingsPanel').hidden=false}
+});
+document.querySelectorAll('.panel [data-close]').forEach(b=>b.onclick=()=>{b.closest('.panel').hidden=true;render()});
+document.querySelectorAll('.switch[data-set]').forEach(sw=>{
+  sw.checked=!!settings[sw.dataset.set];
+  sw.onchange=()=>{settings[sw.dataset.set]=sw.checked;store.set('settings',settings)};
+});
+$('clearSaved').onclick=()=>{
+  if(!saved.length){toast('Kaydedilen şarkı yok',1600);return}
+  if(!confirm('Kaydettiğin bütün şarkılar listeden kaldırılsın mı?'))return;
+  saved=[];store.set('saved',saved);paintSavedCount();toast('Kaydedilenler temizlendi',1600);
+};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('drawer').hidden)closeDrawer()});
+paintSavedCount();
+
+/* open a song page from any list item (tap or Enter) */
+document.addEventListener('click',e=>{const el=e.target.closest('[data-open]');if(el&&!e.target.closest('button'))location.hash=el.dataset.open});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'){const el=e.target.closest&&e.target.closest('[data-open]');if(el){el.click()}}});
+/* no long-press menus (link preview, copy, save image) */
+document.addEventListener('contextmenu',e=>{if(!e.target.closest('input,textarea'))e.preventDefault()});
+/* keep the page 1px away from the very top so the app's pull-to-refresh never triggers */
+function nudgeTop(){if(document.body.classList.contains('lock'))return;if(window.scrollY<1&&document.documentElement.scrollHeight>innerHeight)window.scrollTo(0,1)}
+window.addEventListener('scroll',()=>{if(window.scrollY<1)requestAnimationFrame(nudgeTop)},{passive:true});
+window.addEventListener('load',()=>setTimeout(nudgeTop,50));
 load();
 })();
 </script>
